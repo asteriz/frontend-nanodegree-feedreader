@@ -50,7 +50,9 @@ h2 {
 }
 
 .slide-menu {
-    position: absolute;
+    position: fixed;
+    overflow: auto;
+    z-index: 1000;
     top: 3.5em;
     padding: 1em;
     background: #4caf50;
