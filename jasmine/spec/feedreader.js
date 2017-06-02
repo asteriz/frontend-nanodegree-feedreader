@@ -52,7 +52,7 @@ $(function() {
          * hidden by default.
          */
         it('the menu element is hidden by default', function() {
-            expect($("body").hasClass("menu-hidden")).toBe(true);
+            expect($("body").hasClass("menu-hidden")).toBeTruthy();
         });
 
          /* A test that ensures the menu changes
@@ -60,12 +60,12 @@ $(function() {
           */
         it('does the menu display when clicked', function() {
             $('.menu-icon-link').click();
-            expect($("body").hasClass("menu-hidden")).toBe(false);
+            expect($("body").hasClass("menu-hidden")).toBeFalsy();
         });
 
         it('does it hide when clicked again', function() {
             $('.menu-icon-link').click();
-            expect($("body").hasClass("menu-hidden")).toBe(true);
+            expect($("body").hasClass("menu-hidden")).toBeTruthy();
         });
     });
 
@@ -79,10 +79,8 @@ $(function() {
             loadFeed(0, done);
         });
 
-        it('when the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container', function(done) {
-            expect($('.feed .entry')).toBeDefined();
+        it('when the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container', function() {
             expect($('.feed .entry').length).toBeGreaterThan(0);
-            done();
         });
     });
 
@@ -91,20 +89,19 @@ $(function() {
         /* A test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          */
-        var titleBakup;
         beforeEach(function(done) {
-            titleBakup = $('.header-title').html();
-            if (allFeeds.length > 1) {
-                loadFeed(1, done);
-            } else {
-                done();
-            }
+            loadFeed(0, done);
         });
 
         it('when a new feed is loaded by the loadFeed function that the content actually changes', function(done) {
             expect(allFeeds.length).toBeGreaterThan(1);
-            expect($('.header-title').html()).not.toBe(titleBakup);
-            done();
+            if (allFeeds.length > 1) {
+                var entriesBakup = $('.feed .entry').html();
+                loadFeed(1, function() {
+                    expect($('.feed .entry').html()).not.toEqual(entriesBakup);
+                    done();
+                });
+            }
         });
     });
 
